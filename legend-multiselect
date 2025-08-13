@@ -1,0 +1,96 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 420,
+  "height": 260,
+
+  "data": [
+    {
+      "name": "points",
+      "values": [
+        {"x": 1, "y": 28, "type": "A"},
+        {"x": 2, "y": 55, "type": "B"},
+        {"x": 3, "y": 43, "type": "A"},
+        {"x": 4, "y": 91, "type": "B"},
+        {"x": 5, "y": 81, "type": "C"},
+        {"x": 6, "y": 53, "type": "C"}
+      ]
+    },
+    {
+      "name": "filtered",
+      "source": "points",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "length(legendSel)==0 || indexof(legendSel, datum.type) >= 0"
+        }
+      ]
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "legendSel",
+      "value": [],
+      "on": [
+        {
+          "events": {"source": "legend", "type": "click"},
+          "update": "datum && (indexof(legendSel, datum.value) >= 0 ? legendSel.slice(0, indexof(legendSel, datum.value)).concat(legendSel.slice(indexof(legendSel, datum.value)+1)) : legendSel.concat([datum.value]))"
+        },
+        {
+          "events": {"source": "legend", "type": "dblclick"},
+          "update": "[]"
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {"name": "x", "type": "linear", "domain": {"data":"points","field":"x"}, "range": "width", "nice": true},
+    {"name": "y", "type": "linear", "domain": {"data":"points","field":"y"}, "range": "height", "nice": true},
+    {"name": "color", "type": "ordinal", "domain": {"data":"points","field":"type"}, "range": {"scheme":"category10"}}
+  ],
+
+  "axes": [
+    {"scale": "x", "orient": "bottom"},
+    {"scale": "y", "orient": "left"}
+  ],
+
+  "legends": [
+    {
+      "fill": "color",
+      "title": "Type",
+      "encode": {
+        "symbols": {
+          "update": {
+            "opacity": {
+              "signal": "length(legendSel)==0 || indexof(legendSel, datum.value) >= 0 ? 1 : 0.3"
+            }
+          }
+        },
+        "labels": {
+          "update": {
+            "opacity": {
+              "signal": "length(legendSel)==0 || indexof(legendSel, datum.value) >= 0 ? 1 : 0.3"
+            }
+          }
+        }
+      }
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "symbol",
+      "from": {"data": "filtered"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "fill": {"scale": "color", "field": "type"},
+          "size": {"value": 80},
+          "tooltip": {"signal": "{type: datum.type, x: datum.x, y: datum.y}"}
+        }
+      }
+    }
+  ]
+}

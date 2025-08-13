@@ -1,0 +1,115 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 420,
+  "height": 260,
+
+  "data": [
+    {
+      "name": "points",
+      "values": [
+        {"x": 1, "y": 28, "type": "A"},
+        {"x": 2, "y": 55, "type": "B"},
+        {"x": 3, "y": 43, "type": "A"},
+        {"x": 4, "y": 91, "type": "B"},
+        {"x": 5, "y": 81, "type": "C"},
+        {"x": 6, "y": 53, "type": "C"}
+      ]
+    },
+    {
+      "name": "cats",
+      "source": "points",
+      "transform": [
+        {"type": "aggregate", "groupby": ["type"]},
+        {"type": "collect", "sort": {"field": "type"}}
+      ]
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "legendSel",
+      "value": [],
+      "on": [
+        {
+          "events": "@legendSwatch:click",
+          "update": "indexof(legendSel, datum.type) >= 0 ? legendSel.slice(0, indexof(legendSel, datum.type)).concat(legendSel.slice(indexof(legendSel, datum.type)+1)) : legendSel.concat([datum.type])"
+        },
+        { "events": "dblclick", "update": "[]" }
+      ]
+    }
+  ],
+
+  "scales": [
+    {"name": "x", "type": "linear", "domain": {"data":"points","field":"x"}, "range": "width", "nice": true},
+    {"name": "y", "type": "linear", "domain": {"data":"points","field":"y"}, "range": "height", "nice": true},
+    {"name": "color", "type": "ordinal", "domain": {"data":"points","field":"type"}, "range": {"scheme":"category10"}},
+    {"name": "ly", "type": "band", "domain": {"data":"cats","field":"type"}, "range": [0, 72], "padding": 0.2}
+  ],
+
+  "axes": [
+    {"scale": "x", "orient": "bottom"},
+    {"scale": "y", "orient": "left"}
+  ],
+
+  "marks": [
+    {
+      "type": "group",
+      "name": "legendG",
+      "encode": { "enter": { "x": {"value": 320}, "y": {"value": 10}, "width": {"value": 90}, "height": {"value": 90} } },
+      "marks": [
+        {
+          "type": "rect",
+          "name": "legendSwatch",
+          "from": {"data": "cats"},
+          "encode": {
+            "enter": {
+              "x": {"value": 0},
+              "y": {"scale": "ly", "field": "type"},
+              "width": {"value": 14},
+              "height": {"value": 14},
+              "fill": {"scale": "color", "field": "type"},
+              "stroke": {"value": "black"},
+              "cursor": {"value": "pointer"}
+            },
+            "update": {
+              "opacity": {"signal": "length(legendSel)==0 || indexof(legendSel, datum.type)>=0 ? 1 : 0.3"}
+            }
+          }
+        },
+        {
+          "type": "text",
+          "from": {"data": "cats"},
+          "encode": {
+            "enter": {
+              "x": {"value": 20},
+              "y": {"scale": "ly", "field": "type", "offset": 12},
+              "text": {"field": "type"},
+              "baseline": {"value": "alphabetic"},
+              "cursor": {"value": "pointer"},
+              "fill": {"value": "black"}
+            },
+            "update": {
+              "opacity": {"signal": "length(legendSel)==0 || indexof(legendSel, datum.type)>=0 ? 1 : 0.3"}
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "type": "symbol",
+      "from": {"data": "points"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"},
+          "fill": {"scale": "color", "field": "type"},
+          "size": {"value": 80}
+        },
+        "update": {
+          "opacity": {"signal": "length(legendSel)==0 || indexof(legendSel, datum.type)>=0 ? 1 : 0"}
+        }
+      }
+    }
+  ]
+}

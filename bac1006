@@ -113,7 +113,7 @@
       "name": "today",
       "init": "+datetime(year(now()),month(now()),date(now()))"
     },
-    {"name": "todayRule", "init": "timeFormat(today,'%d/%m/%y')"},
+    {"name": "todayRule", "init": "timeFormat(today,'%m-%d-%y')"},
     {
       "name": "zoom",
       "value": 1,
@@ -560,7 +560,7 @@
         }
       ],
       "format": {
-        "parse": {"start": "date:'%d/%m/%Y'", "end": "date:'%d/%m/%Y'"}
+        "parse": {"start": "date:'%m-%d-%y'", "end": "date:'%m-%d-%y'"}
       }
     },
     {
@@ -1156,7 +1156,7 @@
       "encode": {
         "update": {
           "text": {
-            "signal": "showDomainSpanLabel?timeFormat(xDom[0],'%d/%m/%y') +' - ' + timeFormat(xDom[1],'%d/%m/%y'):null"
+            "signal": "showDomainSpanLabel?timeFormat(xDom[0],'%m-%d-%y') +' - ' + timeFormat(xDom[1],'%m-%d-%y'):null"
           },
           "baseline": {"value": "bottom"},
           "align": {"value": "right"},
@@ -1335,7 +1335,7 @@
                   "align": {"value": "center"},
                   "x": {"signal": "(startColumnWidth-columnPadding)/2"},
                   "y": {"signal": "scale('y', datum.id)+bandwidth('y')/2"},
-                  "text": {"signal": "timeFormat(datum.start,' %d/%m/%y')"},
+                  "text": {"signal": "timeFormat(datum.start,' %m-%d-%y')"},
                   "font": {
                     "signal": "datum.phase == datum.task?'Arial':'Segoe UI'"
                   },
@@ -1379,7 +1379,7 @@
                   "align": {"value": "center"},
                   "x": {"signal": "(startColumnWidth-columnPadding)/2"},
                   "y": {"signal": "scale('y', datum.id)+bandwidth('y')/2"},
-                  "text": {"signal": "timeFormat(datum.labelEnd,' %d/%m/%y')"},
+                  "text": {"signal": "timeFormat(datum.labelEnd,' %m-%d-%y')"},
                   "font": {
                     "signal": "datum.phase == datum.task?'Arial':'Segoe UI'"
                   },
@@ -1946,7 +1946,7 @@
             "update": {
               "x": {"signal": "scale('x', datum.s)"},
               "y": {"value": 10},
-              "text": {"signal": "'Start:   ' + timeFormat(datum.s, '%d-%m-%Y')"},
+              "text": {"signal": "'Start:   ' + timeFormat(datum.s, '%m-%d-%Y')"},
               "fill": {"value": "#2ca02c"},
               "angle": {"value": 90},
               "baseline": {"value": "bottom"},
@@ -1967,7 +1967,7 @@
             "update": {
               "x": {"signal": "scale('x', datum.e)"},
               "y": {"value": 100},
-              "text": {"signal": "'End: ' + timeFormat(datum.e, '%d-%m-%Y')"},
+              "text": {"signal": "'End: ' + timeFormat(datum.e, '%m-%d-%Y')"},
               "fill": {"value": "#d62728"},
               "angle": {"value": 90},
               "baseline": {"value": "bottom"},

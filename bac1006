@@ -722,6 +722,21 @@
           "as": ["s", "e"]
         },
         {"type": "formula", "as": "days", "expr": "(datum.e-datum.s)/oneDay"}
+        ,{
+          "type": "formula",
+          "as": "weeks",
+          "expr": "datum.days / 7"
+        }
+        ,{
+          "type": "formula",
+          "as": "weekdays",
+          "expr": "datum.days - floor((datum.days + day(datum.s)) / 7) * 2 - (day(datum.s) == 0 ? 1 : 0) - (day(datum.e) == 6 ? 1 : 0)"
+        }
+        ,{
+          "type": "formula",
+          "as": "weekendDays",
+          "expr": "datum.days - datum.weekdays"
+        }
       ]
     },
     {
@@ -1082,6 +1097,25 @@
           }
         }
       ]
+    },
+    {
+      "name": "projectDurationText",
+      "description": "Label for total project duration",
+      "type": "text",
+      "from": {"data": "xExt"},
+      "encode": {
+        "update": {
+          "x": {"signal": "columnsWidth + ganttWidth / 2"},
+          "y": {"value": -35},
+          "text": {"signal": "'Total Duration: ' + format(datum.days, '.1f') + ' days'"},
+          "fill": {"value": "#1f77b4"},
+          "baseline": {"value": "bottom"},
+          "align": {"value": "center"},
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "opacity": {"value": 0.9}
+        }
+      }
     },
     {
       "name": "xDomainText",
@@ -1886,8 +1920,8 @@
               "angle": {"value": 90},
               "baseline": {"value": "bottom"},
               "align": {"value": "left"},
+              "dx": {"value": 0},
               "dy": {"value": 15},
-              "font":{"value":"Open Sans"},
               "fontSize": {"value": 12},
               "fontWeight": {"value": ""}
             }
@@ -1901,37 +1935,20 @@
           "encode": {
             "update": {
               "x": {"signal": "scale('x', datum.e)"},
-              "y": {"value": -5},
-              "text": {"signal": "'End: ' + timeFormat(datum.e, '%d/%m/%Y')"},
+              "y": {"value": 100},
+              "text": {"signal": "'End: ' + timeFormat(datum.e, '%d-%m-%Y')"},
               "fill": {"value": "#d62728"},
-              "angle": {"value": 0},
+              "angle": {"value": 90},
               "baseline": {"value": "bottom"},
               "align": {"value": "right"},
               "dx": {"value": -5},
-              "fontSize": {"value": 11},
-              "fontWeight": {"value": "bold"}
-            }
-          }
-        },
-        {
-          "name": "projectDurationText",
-          "description": "Label for total project duration",
-          "type": "text",
-          "from": {"data": "xExt"},
-          "encode": {
-            "update": {
-              "x": {"signal": "(scale('x', datum.s) + scale('x', datum.e)) / 2"},
-              "y": {"value": -25},
-              "text": {"signal": "'Total Duration: ' + format(datum.days, '.1f') + ' days'"},
-              "fill": {"value": "#1f77b4"},
-              "baseline": {"value": "bottom"},
-              "align": {"value": "center"},
+              "dy": {"value": 0},
               "fontSize": {"value": 12},
-              "fontWeight": {"value": "bold"},
-              "opacity": {"value": 0.9}
+              "fontWeight": {"value": ""}
             }
           }
         },
+        
         {
           "name": "taskDependencyArrowsymbol",
           "description": "Dependency arrows",

@@ -113,7 +113,7 @@
       "name": "today",
       "init": "+datetime(year(now()),month(now()),date(now()))"
     },
-    {"name": "todayRule", "init": "timeFormat(today,'%m-%d-%y')"},
+    {"name": "todayRule", "init": "timeFormat(today,'%d/%m/%y')"},
     {
       "name": "zoom",
       "value": 1,
@@ -560,7 +560,7 @@
         }
       ],
       "format": {
-        "parse": {"start": "date:'%m-%d-%y'", "end": "date:'%m-%d-%y'"}
+        "parse": {"start": "date:'%d/%m/%Y'", "end": "date:'%d/%m/%Y'"}
       }
     },
     {
@@ -1149,6 +1149,48 @@
       }
     },
     {
+          "name": "projectStartTextTop",
+          "description": "Label for project start date",
+          "type": "text",
+          "from": {"data": "xExt"},
+          "encode": {
+            "update": {
+              "x": {"signal": "scale('x', datum.s)+columnsWidth"},
+              "y": {"signal": "-100"},
+              "text": {"signal": "'Start:   ' + timeFormat(datum.s, '%d-%m-%Y')"},
+              "fill": {"value": "#2ca02c"},
+              "angle": {"value": 90},
+              "baseline": {"value": "top"},
+              "align": {"value": "left"},
+              "dx": {"value": -10},
+              "dy": {"value": 5},
+              "fontSize": {"value": 12},
+              "fontWeight": {"value": ""}
+            }
+          }
+        },
+        {
+          "name": "projectEndTextTop",
+          "description": "Label for project end date",
+          "type": "text",
+          "from": {"data": "xExt"},
+          "encode": {
+            "update": {
+              "x": {"signal": "scale('x', datum.e)+columnsWidth"},
+              "y": {"signal": "-10"},
+              "text": {"signal": "'End: ' + timeFormat(datum.e, '%d-%m-%Y')"},
+              "fill": {"value": "#d62728"},
+              "angle": {"value": 90},
+              "baseline": {"value": "bottom"},
+              "align": {"value": "right"},
+              "dx": {"value": -10},
+              "dy": {"value": 0},
+              "fontSize": {"value": 12},
+              "fontWeight": {"value": ""}
+            }
+          }
+        },
+    {
       "name": "xDomainText",
       "data": [{}],
       "interactive": false,
@@ -1156,7 +1198,7 @@
       "encode": {
         "update": {
           "text": {
-            "signal": "showDomainSpanLabel?timeFormat(xDom[0],'%m-%d-%y') +' - ' + timeFormat(xDom[1],'%m-%d-%y'):null"
+            "signal": "showDomainSpanLabel?timeFormat(xDom[0],'%m-%d-%Y') +' - ' + timeFormat(xDom[1],'%m-%d-%Y'):null"
           },
           "baseline": {"value": "bottom"},
           "align": {"value": "right"},
@@ -1335,7 +1377,7 @@
                   "align": {"value": "center"},
                   "x": {"signal": "(startColumnWidth-columnPadding)/2"},
                   "y": {"signal": "scale('y', datum.id)+bandwidth('y')/2"},
-                  "text": {"signal": "timeFormat(datum.start,' %m-%d-%y')"},
+                  "text": {"signal": "timeFormat(datum.start,' %m-%d-%Y')"},
                   "font": {
                     "signal": "datum.phase == datum.task?'Arial':'Segoe UI'"
                   },
@@ -1379,7 +1421,7 @@
                   "align": {"value": "center"},
                   "x": {"signal": "(startColumnWidth-columnPadding)/2"},
                   "y": {"signal": "scale('y', datum.id)+bandwidth('y')/2"},
-                  "text": {"signal": "timeFormat(datum.labelEnd,' %m-%d-%y')"},
+                  "text": {"signal": "timeFormat(datum.labelEnd,' %m-%d-%Y')"},
                   "font": {
                     "signal": "datum.phase == datum.task?'Arial':'Segoe UI'"
                   },
@@ -1945,14 +1987,14 @@
           "encode": {
             "update": {
               "x": {"signal": "scale('x', datum.s)"},
-              "y": {"value": 10},
-              "text": {"signal": "'Start:   ' + timeFormat(datum.s, '%m-%d-%Y')"},
+              "y": {"signal": "height-100"},
+              "text": {"signal": "'Start:   ' + timeFormat(datum.s, '%d-%m-%Y')"},
               "fill": {"value": "#2ca02c"},
               "angle": {"value": 90},
-              "baseline": {"value": "bottom"},
+              "baseline": {"value": "top"},
               "align": {"value": "left"},
               "dx": {"value": 0},
-              "dy": {"value": 15},
+              "dy": {"value": 5},
               "fontSize": {"value": 12},
               "fontWeight": {"value": ""}
             }
@@ -1966,8 +2008,8 @@
           "encode": {
             "update": {
               "x": {"signal": "scale('x', datum.e)"},
-              "y": {"value": 100},
-              "text": {"signal": "'End: ' + timeFormat(datum.e, '%m-%d-%Y')"},
+              "y": {"signal": "100"},
+              "text": {"signal": "'End: ' + timeFormat(datum.e, '%d-%m-%Y')"},
               "fill": {"value": "#d62728"},
               "angle": {"value": 90},
               "baseline": {"value": "bottom"},

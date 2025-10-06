@@ -737,6 +737,16 @@
           "as": "weekendDays",
           "expr": "datum.days - datum.weekdays"
         }
+        ,{
+          "type": "formula",
+          "as": "daysExcludingWeekends",
+          "expr": "datum.weekdays"
+        }
+        ,{
+          "type": "formula",
+          "as": "weeksExcludingWeekends",
+          "expr": "datum.weekdays / 5"
+        }
       ]
     },
     {
@@ -1105,9 +1115,30 @@
       "from": {"data": "xExt"},
       "encode": {
         "update": {
-          "x": {"signal": "columnsWidth + ganttWidth / 2"},
-          "y": {"value": -35},
-          "text": {"signal": "'Total Duration: ' + format(datum.days, '.1f') + ' days'"},
+          "x": {"signal": "columnsWidth + (ganttWidth / 4)"},
+          "y": {"value": -40},
+          "text": {"signal": "'Total: ' + format(datum.weeks, '.1f') + ' weeks || ' + format(datum.days, '.0f') + ' CDays  ||  '+ format(datum.weekdays, '.0f') + ' weekdays  ||  ' + format(datum.weekendDays, '.0f') + ' weekend days '"},
+          
+          "fill": {"value": "#1f77b4"},
+          "baseline": {"value": "bottom"},
+          "align": {"value": "center"},
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "opacity": {"value": 0.9}
+        }
+      }
+    },
+    {
+      "name": "projectDurationText2",
+      "description": "Label for total project duration",
+      "type": "text",
+      "from": {"data": "xExt"},
+      "encode": {
+        "update": {
+          "x": {"signal": "columnsWidth + (ganttWidth / 4)"},
+          "y": {"value": -55},
+          "text": {"signal": "'Total: ' + format(datum.weeksExcludingWeekends, '.1f') + ' MWeeks || ' + format(datum.daysExcludingWeekends, '.0f') + ' MDays '"},
+          
           "fill": {"value": "#1f77b4"},
           "baseline": {"value": "bottom"},
           "align": {"value": "center"},

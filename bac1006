@@ -1116,7 +1116,7 @@
       "encode": {
         "update": {
           "x": {"signal": "columnsWidth + (ganttWidth / 4)"},
-          "y": {"value": -40},
+          "y": {"signal": "height+40"},
           "text": {"signal": "'Total: ' + format(datum.weeks, '.1f') + ' weeks || ' + format(datum.days, '.0f') + ' CDays  ||  '+ format(datum.weekdays, '.0f') + ' weekdays  ||  ' + format(datum.weekendDays, '.0f') + ' weekend days '"},
           
           "fill": {"value": "#1f77b4"},
@@ -1136,7 +1136,7 @@
       "encode": {
         "update": {
           "x": {"signal": "columnsWidth + (ganttWidth / 4)"},
-          "y": {"value": -55},
+          "y": {"signal": "height+55"},
           "text": {"signal": "'Total: ' + format(datum.weeksExcludingWeekends, '.1f') + ' MWeeks || ' + format(datum.daysExcludingWeekends, '.0f') + ' MDays '"},
           
           "fill": {"value": "#1f77b4"},

@@ -135,6 +135,20 @@
       "init": "timezoneoffset(data('dataset')[0]['start']) * 60 *1000"
     },
 {
+  "name": "baseSelectedStart",
+  "value": null,
+  "on": [
+    {"events": "@selectedTimelineOverlay:pointerdown", "update": "selectedStart"}
+  ]
+},
+{
+  "name": "baseSelectedEnd",
+  "value": null,
+  "on": [
+    {"events": "@selectedTimelineOverlay:pointerdown", "update": "selectedEnd"}
+  ]
+},
+{
   "name": "selectedStart",
   "init": "+datetime(year(timeParse(selectedStartDate,'%d/%m/%Y')),month(timeParse(selectedStartDate,'%d/%m/%Y')),date(timeParse(selectedStartDate,'%d/%m/%Y')))",
   "on": [
@@ -147,7 +161,7 @@
           {"source": "window", "type": "pointerup"}
         ]
       },
-      "update": "overlayDragging ? selectedStart + round((x() - downX) / dayBandwidth) * oneDay : selectedStart"
+      "update": "baseSelectedStart != null && overlayDragging ? baseSelectedStart + overlayDelta : selectedStart"
     }
   ]
 },
@@ -164,7 +178,7 @@
           {"source": "window", "type": "pointerup"}
         ]
       },
-      "update": "overlayDragging ? selectedEnd + round((x() - downX) / dayBandwidth) * oneDay : selectedEnd"
+      "update": "baseSelectedEnd != null && overlayDragging ? baseSelectedEnd + overlayDelta : selectedEnd"
     }
   ]
 },
@@ -333,7 +347,7 @@
           ]
         }
       ],
-      "update": "overlayDragging ? (x() - downX) / dayBandwidth * oneDay : 0"
+      "update": "overlayDragging ? round((x() - downX) / dayBandwidth) * oneDay : 0"
     }
   ]
 },

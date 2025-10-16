@@ -178,9 +178,13 @@
           {"source": "window", "type": "pointerup"}
         ]
       },
-      "update": "baseSelectedEnd != null && overlayDragging ? baseSelectedEnd + overlayDelta : selectedEnd"
+      "update": "baseSelectedEnd != null && overlayDragging ? baseSelectedStart + overlayDelta + selectedDuration : selectedEnd"
     }
   ]
+},
+{
+  "name": "selectedDuration",
+  "update": "selectedEnd - selectedStart"
 },
     {
       "name": "dayBandwidth",
